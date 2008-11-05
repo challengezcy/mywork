@@ -1,0 +1,52 @@
+8
+
+dir
+103
+file:///F:/SVNDB/SDK_VF1002EVB/vfsdk20_vf1002/bsp/vfbsp/io/display/src
+file:///F:/SVNDB
+
+
+
+2008-10-08T05:35:44.265625Z
+103
+liuweidong
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+193a53e2-4377-5247-b660-da204a73f751
+
+display_if.c
+file
+
+
+
+
+2008-10-09T05:11:04.000000Z
+f3dcafbed772a9121016dcdb41a204a9
+2008-10-08T05:35:44.265625Z
+103
+liuweidong
+
+vf_display_if_drv.c
+file
+106
+
+
+
+2008-10-17T07:14:56.937500Z
+deeaaf4b2dc63100dedc30ed59d96ca0
+2008-10-28T01:22:26.515625Z
+106
+liuweidong
+
