@@ -116,42 +116,13 @@ typedef struct vf_display_if_init_struct
 	uint_32     BASE_ADDRESS;	
 	//uint_32     INIT_WIDTH;
        //uint_32     INIT_HEIGHT;
-      uint_32     PANEL_TYPE;
+       uint_32     PANEL_TYPE;
 	uint_32    BIT_TYPE;
     /* The lcdc interrupt vector to use if interrupt driven */
-     uint_32     LCDC_VECTOR;     
+       uint_32     LCDC_VECTOR;     
+    	void (*PANEL_INIT)();
+    	void (*TVENCODER_INIT)();
 } VF_DISPLAY_IF_INIT_STRUCT, _PTR_ VF_DISPLAY_IF_INIT_STRUCT_PTR;
-
-
-/*----------------------------------------------------------------------------
-** display interface DEVICE STRUCT
-**
-** This structure used to store information about an vf display if device
-** for the IO device table
-------------------------------------------------------------------------------*/
-typedef struct vf_display_if_info_struct
-{
-    /* The address of the I2s/Ac97 device */
-    VF_REGS_FT200_LCDC  _PTR_   LCDC_REGS_PTR;
-    
-    /* Current initialized values */
-    VF_DISPLAY_IF_INIT_STRUCT  INIT;  
-    uint_32     ADDRESS0;
-    uint_32     ADDRESS1;
-    uint_32     ADDRESS2;
-    uint_32     ADDRESS3;
-    uint_32     Width;
-    uint_32     High;
-    /* The previous interrupt handler and data */
-    /* The previous interrupt handler and data for the UART */
-    void          (_CODE_PTR_   OLD_ISR)(pointer);
-    void          (_CODE_PTR_   OLD_ISR_EXCEPTION_HANDLER)(_mqx_uint, _mqx_uint,pointer, pointer);
-    pointer                     OLD_ISR_DATA;
-    
-   
-} VF_DISPLAY_IF_INFO_STRUCT, _PTR_ VF_DISPLAY_IF_INFO_STRUCT_PTR;
-
-
 
 /*--------------------------------------------------------------------------*/
 /* 

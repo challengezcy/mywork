@@ -25,6 +25,7 @@
 #include "vf1002_lcdc.h"
 #include "Font.h"
 #include "ftlcdconfig.h"
+#include "vf_display_drv_prv.h"
 #include "vf_display_drv.h"
 
 extern uint_32 _vf_lcdc_init(IO_DISPLAY_IF_DEVICE_STRUCT_PTR,char_ptr);
@@ -236,12 +237,13 @@ uint_32 _vf_lcdc_init
    /* reg_ptr will point to the lcdc Registers */
    regs_ptr  =  (VF_REGS_FT200_LCDC _PTR_)io_info_ptr->INIT.BASE_ADDRESS;
    io_info_ptr->LCDC_REGS_PTR   = regs_ptr;   
+   io_info_ptr->LCDC_VECTOR = BSP_LCDC_INTERRUPT_VECTOR;
    //set up lcdc interrupt
-   io_info_ptr->OLD_ISR_DATA = _int_get_isr_data(io_info_ptr->INIT.LCDC_VECTOR);
+   io_info_ptr->OLD_ISR_DATA = _int_get_isr_data(io_info_ptr->LCDC_VECTOR);
    io_info_ptr->OLD_ISR_EXCEPTION_HANDLER =
-	   _int_get_exception_handler(io_info_ptr->INIT.LCDC_VECTOR);
+	   _int_get_exception_handler(io_info_ptr->LCDC_VECTOR);
    io_info_ptr->OLD_ISR =
-      _int_install_isr(io_info_ptr->INIT.LCDC_VECTOR,_vf_lcdc_int_isr,io_info_ptr);   
+      _int_install_isr(io_info_ptr->LCDC_VECTOR,_vf_lcdc_int_isr,io_info_ptr);   
    //now init ssp regs with defult values
    //======================
    lcd_type = io_init_ptr->PANEL_TYPE;
@@ -250,6 +252,12 @@ uint_32 _vf_lcdc_init
 
    SysCtl_EnableApb();
    SysCtl_EnableDisplay();
+
+   if(io_init_ptr->PANEL_INIT != NULL)
+   	io_init_ptr->PANEL_INIT();
+   if(io_init_ptr->TVENCODER_INIT != NULL)
+   	io_init_ptr->TVENCODER_INIT();
+   
     for( i=0; i<GSIZE; i++ ){
     	INT32 val;	  
     	val = 0x03020100 + 0x04040404 * i;
@@ -684,10 +692,12 @@ uint_32 _vf_lcdc_ioctl
 					regs_ptr->GP_REGS.img2add =  p->ADDR2;
 					flag = 0x1;
 				}
+				 _vf_disable_int(BSP_LCDC_INTERRUPT_VECTOR);  
 				io_info_ptr->ADDRESS0 = p->ADDR0;
 				io_info_ptr->ADDRESS1 = p->ADDR1;
 				io_info_ptr->ADDRESS2 = p->ADDR2;	
 				//io_info_ptr->ADDRESS3 = p->ADDR3;	
+				 _vf_enable_int(BSP_LCDC_INTERRUPT_VECTOR);  
 			}
 			break;				
 		default:
